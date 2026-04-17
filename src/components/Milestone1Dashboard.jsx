@@ -747,7 +747,7 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                         <div className="flex flex-col justify-between space-y-3">
                             <div>
                                 <p className="text-sm text-slate-400 leading-relaxed">
-                                    These variants of intelligent inference scheduling optimize request routing to maximize performance. By leveraging real-time cache state introspection or machine-learned latency predictions, they reduce tail latency, increase throughput, and improve cache hit rates across distributed model servers.
+                                    These variants of intelligent inference scheduling optimize request routing to maximize performance. By leveraging GKE Inference Gateway, real-time cache state introspection or machine-learned latency predictions, they reduce tail latency, increase throughput, and improve cache hit rates across distributed model servers.
                                 </p>
                             </div>
                         </div>
