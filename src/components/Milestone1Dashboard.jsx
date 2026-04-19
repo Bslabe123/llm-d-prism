@@ -3,8 +3,10 @@ import {
     LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer,
     ScatterChart, Scatter, ComposedChart, ZAxis, Label, ReferenceArea, ReferenceLine
 } from 'recharts';
-import { Zap, Download, Copy, Check, Info, ArrowLeft, ExternalLink, Settings, ShieldAlert, Cpu, Cloud, Server, Bell, Slack, ChevronDown, Share2, Eye, Maximize2, ArrowDown, X, MessageCircle, Menu, BarChart2, Table } from 'lucide-react';
+import InferenceSchedulingChart from './InferenceSchedulingChart';
+import { Zap, Download, Copy, Check, Info, ArrowLeft, ExternalLink, Settings, ShieldAlert, Cpu, Cloud, Server, Bell, Slack, ChevronDown, ChevronUp, Share2, Eye, Maximize2, ArrowDown, X, MessageCircle, Menu, BarChart2, Table } from 'lucide-react';
 import { scanInferenceScheduling } from '../utils/gcsScanner';
+import { CustomXAxis, CustomYAxis, CustomLabel, CustomChartTooltip, ChartCard } from './common';
 
 const RAW_GEMMA_DATA = [
     {
@@ -230,52 +232,14 @@ const RichSchedulingTooltip = ({ active, payload, zoomXAxis, zoomYAxis }) => {
     );
 };
 
-const PercentileGroupedLegend = ({ payload }) => {
-    if (!payload || !payload.length) return null;
 
-    // Filter out duplicate entries from Line components
-    const filteredPayload = payload.filter(entry => !['dynamic_y', 'input', 'output', 'total', 'qps'].includes(entry.value));
-
-    // Group entries by variant
-    const baselineItems = filteredPayload.filter(e => e.value.includes('Standard Kubernetes'));
-    const routerItems = filteredPayload.filter(e => e.value.includes('Approx. prefix aware routing'));
-
-    const renderItem = (entry, index) => {
-        let dashArray = "0";
-        if (entry.value.includes('P90')) dashArray = "5 5";
-        else if (entry.value.includes('P99')) dashArray = "2 2";
-
-        return (
-            <div key={index} className="flex items-center gap-1.5 cursor-pointer group w-max" onClick={entry.onClick}>
-                <svg width="16" height="4" className="shrink-0">
-                    <line x1="0" y1="2" x2="16" y2="2" stroke={entry.color} strokeWidth="2" strokeDasharray={dashArray} />
-                </svg>
-                <span className="text-slate-300 font-medium group-hover:text-white transition-colors">{entry.value}</span>
-            </div>
-        );
-    };
-
-    return (
-        <div className="w-full flex flex-col gap-2 border-t border-slate-800/60 pt-2 mt-2 px-4 text-[11px]">
-            {routerItems.length > 0 && (
-                <div className="flex items-center justify-center gap-4 flex-wrap">
-                    {routerItems.map(renderItem)}
-                </div>
-            )}
-            {baselineItems.length > 0 && (
-                <div className="flex items-center justify-center gap-4 flex-wrap">
-                    {baselineItems.map(renderItem)}
-                </div>
-            )}
-        </div>
-    );
-};
 
 const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [gcsData, setGcsData] = useState([]);
     const [reportsMeta, setReportsMeta] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showFilters, setShowFilters] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -903,22 +867,28 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                         <div>
                             <div className="text-[11px] font-extrabold text-emerald-400/90 uppercase tracking-widest mb-3 flex justify-between items-center">
                                 Primary Outcomes
-                                <div className="flex gap-1">
-                                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono border border-slate-700 flex items-center gap-1 font-semibold">
-                                        <span className="w-1 h-1 rounded-full bg-emerald-400 animate-pulse" /> TTFT (P50)
-                                    </span>
-                                    <span className="text-[8px] px-1.5 py-0.5 rounded bg-slate-800 text-slate-400 font-mono border border-slate-700 flex items-center gap-1 font-semibold">
-                                        <span className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse" /> Throughput
-                                    </span>
-                                </div>
+                                <button 
+                                    onClick={(e) => {
+                                        e.stopPropagation();
+                                        document.getElementById('summary-table')?.scrollIntoView({ behavior: 'smooth' });
+                                    }}
+                                    className="text-[10px] text-slate-400 hover:text-white underline cursor-pointer normal-case font-semibold"
+                                >
+                                    View Table
+                                </button>
                             </div>
                             <div className="grid grid-cols-2 gap-3">
-                                <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-3 hover:border-emerald-500/20 transition-all flex flex-col justify-between">
-                                    <div>
-                                        <h3 className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
-                                            <ArrowDown className="w-3 h-3 text-emerald-400" /> Latency reduction
+                                <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-1.5 hover:border-emerald-500/20 transition-all grid grid-rows-[55px_1fr] h-[140px]">
+                                    <div className="flex flex-col justify-start">
+                                        <h3 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-0.5">
+                                            Latency Reduction
                                         </h3>
-                                        <h4 className="text-3xl font-black text-emerald-400 flex items-baseline tracking-tight mb-2">
+                                        <div className="text-[10px] text-slate-400 font-normal uppercase">
+                                            (TTFT P50)
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-center">
+                                        <h4 className="text-4xl font-black text-emerald-400 flex items-baseline tracking-tight">
                                             {(() => {
                                                 const validRows = tableData.filter(r => r.baseline_ttft_p50 > 0 && r.router_ttft_p50 > 0);
                                                 if (validRows.length === 0) return "41%";
@@ -928,44 +898,18 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                                             })()}
                                         </h4>
                                     </div>
-                                    <div className="flex gap-1.5">
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setZoomXAxis('ttft');
-                                                setZoomYAxis('output');
-                                                setVisiblePercentiles(['p50']);
-                                                setZoomLogScale(true);
-                                                const el = document.getElementById('detailed-chart');
-                                                if (el) {
-                                                    const rect = el.getBoundingClientRect();
-                                                    const inView = rect.top < window.innerHeight && rect.bottom >= 0;
-                                                    if (!inView) el.scrollIntoView({ behavior: 'smooth' });
-                                                }
-                                            }}
-                                            className="text-slate-300 bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700/80 p-1 rounded transition-all duration-200 cursor-pointer"
-                                            title="View chart"
-                                        >
-                                            <BarChart2 className="w-3.5 h-3.5" />
-                                        </button>
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                document.getElementById('summary-table')?.scrollIntoView({ behavior: 'smooth' });
-                                            }}
-                                            className="text-slate-300 bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700/80 p-1 rounded transition-all duration-200 cursor-pointer"
-                                            title="View table"
-                                        >
-                                            <Table className="w-3.5 h-3.5" />
-                                        </button>
-                                    </div>
                                 </div>
-                                <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-3 hover:border-cyan-500/20 transition-all flex flex-col justify-between">
-                                    <div>
-                                        <h3 className="text-[10px] font-extrabold text-slate-500 uppercase tracking-wider mb-1 flex items-center gap-1">
-                                            <Zap className="w-3 h-3 text-cyan-400" /> Throughput increase
+                                <div className="bg-slate-800/40 border border-slate-700/50 rounded-lg p-1.5 hover:border-cyan-500/20 transition-all grid grid-rows-[55px_1fr] h-[140px]">
+                                    <div className="flex flex-col justify-start">
+                                        <h3 className="text-xs font-extrabold text-slate-500 uppercase tracking-wider mb-0.5">
+                                            Throughput Increase
                                         </h3>
-                                        <h4 className="text-3xl font-black text-cyan-400 flex items-baseline tracking-tight mb-2">
+                                        <div className="text-[10px] text-slate-400 font-normal uppercase">
+                                            (Output Tokens/sec)
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center justify-center">
+                                        <h4 className="text-4xl font-black text-cyan-400 flex items-baseline tracking-tight">
                                             {(() => {
                                                 const validRows = tableData.filter(r => r.baseline_output_token_rate > 0 && r.router_output_token_rate > 0);
                                                 if (validRows.length === 0) return "0%";
@@ -974,37 +918,6 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                                                 return `${Math.floor(gain)}%`;
                                             })()}
                                         </h4>
-                                    </div>
-                                    <div className="flex gap-1.5">
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                setZoomXAxis('ntpot');
-                                                setZoomYAxis('total');
-                                                setVisiblePercentiles(['p50']);
-                                                setZoomLogScale(false);
-                                                const el = document.getElementById('detailed-chart');
-                                                if (el) {
-                                                    const rect = el.getBoundingClientRect();
-                                                    const inView = rect.top < window.innerHeight && rect.bottom >= 0;
-                                                    if (!inView) el.scrollIntoView({ behavior: 'smooth' });
-                                                }
-                                            }}
-                                            className="text-slate-300 bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700/80 p-1 rounded transition-all duration-200 cursor-pointer"
-                                            title="View chart"
-                                        >
-                                            <BarChart2 className="w-3.5 h-3.5" />
-                                        </button>
-                                        <button 
-                                            onClick={(e) => {
-                                                e.stopPropagation();
-                                                document.getElementById('summary-table')?.scrollIntoView({ behavior: 'smooth' });
-                                            }}
-                                            className="text-slate-300 bg-slate-800/50 hover:bg-slate-700/60 border border-slate-700/80 p-1 rounded transition-all duration-200 cursor-pointer"
-                                            title="View table"
-                                        >
-                                            <Table className="w-3.5 h-3.5" />
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -1020,8 +933,8 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                              <h3 className="text-base font-bold text-white mb-1">
                                  Reproducibility guide
                              </h3>
-                             <p className="text-[9px] text-slate-500 leading-relaxed">
-                                 Replicate this intelligent routing baseline directly on your Kubernetes evaluation cluster.
+                             <p className="text-sm text-slate-500 leading-relaxed">
+                                 Replicate these intelligent inference scheduling benchmarks directly on your Kubernetes evaluation cluster.
                              </p>
                          </div>
 
@@ -1031,325 +944,9 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                     </div>
                 </div>
 
-                <div id="detailed-chart" className="bg-slate-900/80 border border-slate-700/60 rounded-2xl shadow-2xl flex flex-col w-full h-[60vh] overflow-hidden backdrop-blur-sm relative">
-                    {(() => {
-                        const derivedZoomData = additionalChartData
-                            .flatMap(item => {
-                                const chipDivisor = zoomPerChip ? 4 : 1;
-                                
-                                // Safely parse numeric values
-                                const parseNum = (val, fallback = 0) => {
-                                    const parsed = parseFloat(val);
-                                    return isNaN(parsed) ? fallback : parsed;
-                                };
-
-                                const b_outputRate = parseNum(item.baseline_output_token_rate, 0);
-                                const r_outputRate = parseNum(item.router_output_token_rate, 0);
-                                const b_inputRate = parseNum(item.baseline_input_token_rate, parseNum(item.qps, 0) * 512);
-                                const r_inputRate = parseNum(item.router_input_token_rate, parseNum(item.qps, 0) * 512);
-                                
-                                // Baseline object
-                                let b_yVal = b_outputRate;
-                                if (zoomYAxis === 'input') b_yVal = b_inputRate;
-                                else if (zoomYAxis === 'total') b_yVal = b_inputRate + b_outputRate;
-                                else if (zoomYAxis === 'qps') b_yVal = parseNum(item.qps, 0);
-                                else if (zoomYAxis === 'cost') {
-                                    const rates = { spot: 2.89, on_demand: 9.89, cud_1y: 6.54, cud_3y: 4.22 };
-                                    b_yVal = ((b_outputRate * rates[zoomCostMode]) / 10000);
-                                }
-                                
-                                // Router object
-                                let r_yVal = r_outputRate;
-                                if (zoomYAxis === 'input') r_yVal = r_inputRate;
-                                else if (zoomYAxis === 'total') r_yVal = r_inputRate + r_outputRate;
-                                else if (zoomYAxis === 'qps') r_yVal = parseNum(item.qps, 0);
-                                else if (zoomYAxis === 'cost') {
-                                    const rates = { spot: 2.89, on_demand: 9.89, cud_1y: 6.54, cud_3y: 4.22 };
-                                    r_yVal = ((r_outputRate * rates[zoomCostMode]) / 10000);
-                                }
-                                
-                                if (zoomYAxis !== 'cost' && zoomPerChip) {
-                                    b_yVal = b_yVal / chipDivisor;
-                                    r_yVal = r_yVal / chipDivisor;
-                                }
-                                
-                                const isPercentileAxis = ['ttft', 'tpot', 'itl', 'ntpot', 'e2e'].includes(zoomXAxis);
-                                const percentilesToGenerate = isPercentileAxis ? ['p50', 'p90', 'p99'] : ['p50'];
-                                const res = [];
-
-                                percentilesToGenerate.forEach(pKey => {
-                                    const b_tpotVal = parseNum(item[`baseline_tpot_${pKey}`], 20);
-                                    const r_tpotVal = parseNum(item[`router_tpot_${pKey}`], 20);
-                                    const b_ttftVal = parseNum(item[`baseline_ttft_${pKey}`], 250);
-                                    const r_ttftVal = parseNum(item[`router_ttft_${pKey}`], 250);
-                                    const b_itlVal = parseNum(item[`baseline_itl_${pKey}`], 25);
-                                    const r_itlVal = parseNum(item[`router_itl_${pKey}`], 25);
-                                    
-                                    let b_xVal = parseNum(item.qps, 0);
-                                    if (zoomXAxis === 'tpot') b_xVal = b_tpotVal;
-                                    else if (zoomXAxis === 'ntpot') b_xVal = b_tpotVal * 0.85;
-                                    else if (zoomXAxis === 'ttft') b_xVal = b_ttftVal;
-                                    else if (zoomXAxis === 'itl') b_xVal = b_itlVal;
-                                    else if (zoomXAxis === 'tokens_sec') b_xVal = b_outputRate || 1000;
-                                    else if (zoomXAxis === 'e2e') b_xVal = b_ttftVal + b_tpotVal * 128;
-                                    
-                                    let r_xVal = parseNum(item.qps, 0);
-                                    if (zoomXAxis === 'tpot') r_xVal = r_tpotVal;
-                                    else if (zoomXAxis === 'ntpot') r_xVal = r_tpotVal * 0.85;
-                                    else if (zoomXAxis === 'ttft') r_xVal = r_ttftVal;
-                                    else if (zoomXAxis === 'itl') r_xVal = r_itlVal;
-                                    else if (zoomXAxis === 'tokens_sec') r_xVal = r_outputRate || 1000;
-                                    else if (zoomXAxis === 'e2e') r_xVal = r_ttftVal + r_tpotVal * 128;
-                                    
-                                    const hasBaseline = item[`baseline_ttft_${pKey}`] !== undefined;
-                                    const hasRouter = item[`router_ttft_${pKey}`] !== undefined;
-
-                                    if (hasBaseline) {
-                                        res.push({
-                                            ...item,
-                                            type: 'baseline',
-                                            percentile: pKey,
-                                            dynamic_x: parseFloat(b_xVal.toFixed(4)),
-                                            dynamic_y: parseFloat(b_yVal.toFixed(4))
-                                        });
-                                    }
-                                    if (hasRouter) {
-                                        res.push({
-                                            ...item,
-                                            type: 'router',
-                                            percentile: pKey,
-                                            dynamic_x: parseFloat(r_xVal.toFixed(4)),
-                                            dynamic_y: parseFloat(r_yVal.toFixed(4))
-                                        });
-                                    }
-                                });
-
-                                return res;
-                            })
-                            .filter(d => !isNaN(d.dynamic_x) && !isNaN(d.dynamic_y))
-                            .sort((a, b) => a.dynamic_x - b.dynamic_x);
-
-                        const dataMax = derivedZoomData.length > 0 ? Math.max(...derivedZoomData.map(d => d.dynamic_x)) : 100;
-                        const step = Math.max(0.01, dataMax / 100);
-                        const currentMax = zoomXMax === Infinity ? dataMax : zoomXMax;
-                        const isPercentileAxis = ['ttft', 'tpot', 'itl', 'ntpot', 'e2e'].includes(zoomXAxis);
-                        const visibleZoomData = derivedZoomData.filter(d => d.dynamic_x <= currentMax && (!isPercentileAxis || visiblePercentiles.includes(d.percentile)));
-
-                        const xLabels = {
-                            tpot: 'TPOT (ms)',
-                            ntpot: 'Normalized TPOT (ms)',
-                            ttft: 'Mean TTFT (ms)',
-                            itl: 'Inter-Token Latency (ms)',
-                            tokens_sec: 'Tokens/sec',
-                            e2e: 'E2E Latency (ms)',
-                            quality: 'Quality Score',
-                            qps: 'Queries Per Second'
-                        };
-
-                        const yLabels = {
-                            output: 'Output Tokens/sec',
-                            input: 'Input Tokens/sec',
-                            total: 'Total Tokens/sec',
-                            qps: 'Queries Per Second',
-                            cost: 'Cost ($/1M Tokens)'
-                        };
-
-                        const groups = {};
-                        visibleZoomData.forEach(pt => {
-                            let key = 'Other';
-                            if (zoomColorMode === 'hardware') {
-                                key = pt.hardware || 'H100';
-                            } else if (zoomColorMode === 'node_config') {
-                                key = `Nodes: ${pt.num_nodes || 4}`;
-                            } else if (zoomColorMode === 'model') {
-                                key = pt.model_name || 'Model';
-                            }
-                            if (!groups[key]) groups[key] = [];
-                            groups[key].push(pt);
-                        });
-
-                        return (
-                            <div className="flex flex-col w-full h-full">
-                                <div className="px-6 py-4 border-b border-slate-800 bg-slate-900/80 flex justify-between items-start gap-6 shadow-sm">
-                                    <div className="flex flex-col gap-2.5">
-                                        <h3 className="text-lg font-bold text-white">
-                                            {`${{
-                                                'ttft': 'TTFT',
-                                                'tpot': 'TPOT',
-                                                'ntpot': 'NTPOT',
-                                                'itl': 'ITL',
-                                                'tokens_sec': 'Tokens/sec',
-                                                'e2e': 'E2E Latency'
-                                            }[zoomXAxis] || zoomXAxis} vs ${{
-                                                'output': 'Output Tokens/sec',
-                                                'input': 'Input Tokens/sec',
-                                                'total': 'Total Tokens/sec',
-                                                'qps': 'QPS',
-                                                'cost': 'Cost'
-                                            }[zoomYAxis] || zoomYAxis}`}
-                                        </h3>
-                                        
-                                        {/* Benchmark Context Parameters */}
-                                        <div className="flex flex-wrap items-center gap-x-6 gap-y-1 text-[11px]">
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="text-slate-500 font-semibold">Model:</span>
-                                                <span className="font-mono font-bold text-slate-200">{reportsMeta?.model || "Unknown"}</span>
-                                            </div>
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="text-slate-500 font-semibold">Serving Engine:</span>
-                                                <span className="font-mono font-bold text-slate-200">{reportsMeta?.serving_engine || "Unknown"}</span>
-                                            </div>
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="text-slate-500 font-semibold">Precision:</span>
-                                                <span className="font-mono font-bold text-slate-200">{reportsMeta?.precision || "Unknown"}</span>
-                                            </div>
-                                            <div className="flex items-center gap-1.5">
-                                                <span className="text-slate-500 font-semibold">Hardware:</span>
-                                                <span className="font-mono font-bold text-slate-200">{reportsMeta?.hardware || "Unknown"}</span>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
-                        {/* Expert Mode X/Y Axis Selectors Bar */}
-                        <div className="bg-slate-800/40 border-b border-slate-700/50 px-6 py-3 grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-                            <div className="flex flex-col gap-3">
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest w-14">X-Axis:</span>
-                                    <div className="flex flex-wrap bg-slate-900/50 border border-slate-700/50 rounded-lg p-0.5 gap-0.5">
-                                        <button onClick={() => setZoomXAxis('tpot')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomXAxis === 'tpot' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>TPOT</button>
-                                        <button onClick={() => setZoomXAxis('ntpot')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomXAxis === 'ntpot' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>NTPOT</button>
-                                        <button onClick={() => setZoomXAxis('ttft')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomXAxis === 'ttft' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>TTFT</button>
-                                        <button onClick={() => setZoomXAxis('itl')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomXAxis === 'itl' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>ITL</button>
-                                        <button onClick={() => setZoomXAxis('tokens_sec')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomXAxis === 'tokens_sec' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Tokens/sec</button>
-                                        <button onClick={() => setZoomXAxis('e2e')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomXAxis === 'e2e' ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>E2E Latency</button>
-                                    </div>
-                                </div>
-
-                                <div className="flex items-center gap-2">
-                                    <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest w-14">Y-Axis:</span>
-                                    <div className="flex flex-wrap items-center gap-2">
-                                        <div className="flex bg-slate-900/50 border border-slate-700/50 rounded-lg p-0.5 gap-0.5">
-                                            <button onClick={() => setZoomYAxis('output')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomYAxis === 'output' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Output</button>
-                                            <button onClick={() => setZoomYAxis('input')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomYAxis === 'input' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Input</button>
-                                            <button onClick={() => setZoomYAxis('total')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomYAxis === 'total' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Total</button>
-                                            <button onClick={() => setZoomYAxis('qps')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomYAxis === 'qps' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>QPS</button>
-                                            <button onClick={() => setZoomYAxis('cost')} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomYAxis === 'cost' ? 'bg-emerald-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Cost</button>
-                                        </div>
-                                        {zoomYAxis === 'cost' && (
-                                            <select value={zoomCostMode} onChange={(e) => setZoomCostMode(e.target.value)} className="bg-slate-900 border border-slate-700 rounded-lg text-[10px] px-2 py-1 text-slate-300 outline-none">
-                                                <option value="spot">Spot</option>
-                                                <option value="on_demand">On Demand</option>
-                                                <option value="cud_1y">1-Year CUD</option>
-                                                <option value="cud_3y">3-Year CUD</option>
-                                            </select>
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className="flex flex-col gap-3 md:items-end w-full md:w-auto">
-
-
-                                <div className="flex flex-wrap items-center gap-4 justify-end">
-                                    <div className="flex items-center gap-2 bg-slate-900/50 border border-slate-700/50 rounded-lg p-0.5">
-                                        <button onClick={() => setZoomLogScale(!zoomLogScale)} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomLogScale ? 'bg-amber-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>Log Scale</button>
-                                        <div className="h-3 w-px bg-slate-700" />
-                                        <button onClick={() => setZoomPerChip(!zoomPerChip)} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${zoomPerChip ? 'bg-blue-600 text-white shadow' : 'text-slate-400 hover:text-white'}`} title="Normalize per Chip">Per Chip</button>
-                                    </div>
-
-                                    <div className="flex items-center gap-2 bg-slate-900/50 border border-slate-700/50 rounded-lg p-0.5">
-                                        <button onClick={() => setVisiblePercentiles(prev => prev.includes('p50') ? prev.filter(x => x !== 'p50') : [...prev, 'p50'])} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${visiblePercentiles.includes('p50') ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>P50</button>
-                                        <button onClick={() => setVisiblePercentiles(prev => prev.includes('p90') ? prev.filter(x => x !== 'p90') : [...prev, 'p90'])} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${visiblePercentiles.includes('p90') ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>P90</button>
-                                        <button onClick={() => setVisiblePercentiles(prev => prev.includes('p99') ? prev.filter(x => x !== 'p99') : [...prev, 'p99'])} className={`px-2.5 py-1 text-[10px] font-medium rounded-md transition-all ${visiblePercentiles.includes('p99') ? 'bg-indigo-600 text-white shadow' : 'text-slate-400 hover:text-white'}`}>P99</button>
-                                    </div>
-
-                                    <div className="flex items-center gap-2 bg-slate-900/50 border border-slate-700/50 px-3 py-1 rounded-lg">
-                                        <span className="text-[10px] text-slate-400 font-extrabold uppercase tracking-widest">Cap:</span>
-                                        <input type="range" min={0} max={dataMax} step={step} value={currentMax} onChange={(e) => { const val = parseFloat(e.target.value); if (val >= dataMax * 0.99) setZoomXMax(Infinity); else setZoomXMax(val); }} className="w-28 h-1 bg-slate-700 rounded-lg appearance-none cursor-pointer accent-cyan-400" />
-                                        <input type="number" value={zoomXMax === Infinity ? '' : zoomXMax} placeholder={dataMax.toFixed(1)} onChange={(e) => { const val = parseFloat(e.target.value); if (!val || isNaN(val)) setZoomXMax(Infinity); else setZoomXMax(val); }} className="w-16 bg-transparent text-[10px] text-slate-200 focus:outline-none focus:ring-1 focus:ring-cyan-500/50 rounded px-1 text-right font-mono font-bold transition-all" />
-                                        <span className="text-[9px] text-slate-500 font-mono font-bold">ms</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                                        <div className="flex-1 min-h-[400px] relative bg-slate-950/30 rounded-xl p-2 border border-slate-800/40 m-4">
-                                            {/* Branding Attribution Watermark */}
-                                            <div className="absolute bottom-3 right-4 z-10 pointer-events-none opacity-40 flex items-center gap-3">
-                                                <span className="text-[12px] font-extrabold text-slate-400">*</span>
-                                                <span className="text-[9px] font-extrabold tracking-widest uppercase text-slate-400">Generated via llm-d.ai/Prism</span>
-                                            </div>
-
-                                            <ResponsiveContainer width="100%" height="100%">
-                                                <ComposedChart margin={{ top: 10, right: 20, left: 20, bottom: 60 }}>
-                                                    <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" />
-                                                    <XAxis 
-                                                        type="number"
-                                                        dataKey="dynamic_x" 
-                                                        scale={zoomLogScale ? 'log' : 'auto'} 
-                                                        domain={zoomLogScale ? [1, 'auto'] : ['auto', 'auto']} 
-                                                        stroke="#64748b" 
-                                                        tick={{ fontSize: 12 }}
-                                                    >
-                                                        <Label value={xLabels[zoomXAxis] || 'Queries Per Second'} position="insideBottom" offset={-20} fill="#94a3b8" fontSize={12} />
-                                                    </XAxis>
-                                                    <YAxis type="number" dataKey="dynamic_y" stroke="#64748b" tick={{ fontSize: 12 }}>
-                                                        <Label value={yLabels[zoomYAxis] || 'Tokens/sec'} angle={-90} position="insideLeft" offset={-5} fill="#94a3b8" fontSize={12} />
-                                                    </YAxis>
-                                                    <Tooltip cursor={{ strokeDasharray: '3 3' }} content={<RichSchedulingTooltip zoomXAxis={zoomXAxis} zoomYAxis={zoomYAxis} />} />
-                                                    <Legend verticalAlign="bottom" wrapperStyle={{ width: '100%', left: '0px', bottom: '0px' }} content={<PercentileGroupedLegend />} />
-                                                    {(() => {
-                                                        const groups = {};
-                                                        visibleZoomData.forEach(pt => {
-                                                            const prefix = pt.type === 'baseline' ? 'Standard Kubernetes' : 'Approx. prefix aware routing';
-                                                            let key = prefix;
-                                                            if (zoomColorMode === 'default') {
-                                                                const isPercentileAxis = ['ttft', 'tpot', 'itl', 'ntpot', 'e2e'].includes(zoomXAxis);
-                                                                key = isPercentileAxis ? `${prefix} (${pt.percentile.toUpperCase()})` : prefix;
-                                                            } else if (zoomColorMode === 'hardware') {
-                                                                key = `${prefix} - ${pt.hardware || 'H100'}`;
-                                                            } else if (zoomColorMode === 'node_config') {
-                                                                key = `${prefix} - Nodes: ${pt.num_nodes || 4}`;
-                                                            } else if (zoomColorMode === 'model') {
-                                                                key = `${prefix} - ${pt.model_name || 'Model'}`;
-                                                            }
-                                                            if (!groups[key]) groups[key] = [];
-                                                            groups[key].push(pt);
-                                                        });
-
-                                                        const defaultColors = ['#38bdf8', '#f472b6', '#34d399', '#fbbf24', '#a78bfa'];
-                                                        
-                                                        return Object.keys(groups).map((k, idx) => {
-                                                            let scatterColor = defaultColors[idx % defaultColors.length];
-                                                            if (zoomColorMode === 'default') {
-                                                                scatterColor = k.includes('Standard Kubernetes') ? '#fb923c' : '#38bdf8';
-                                                            }
-                                                            
-                                                            let opacity = 1.0;
-                                                            let dashArray = "0";
-                                                            if (k.includes('P90')) {
-                                                                opacity = 0.6;
-                                                                dashArray = "5 5";
-                                                            } else if (k.includes('P99')) {
-                                                                opacity = 0.3;
-                                                                dashArray = "2 2";
-                                                            }
-
-                                                            return (
-                                                                <React.Fragment key={k}>
-                                                                    <Line type="monotone" dataKey="dynamic_y" data={groups[k]} stroke={scatterColor} strokeWidth={2} strokeOpacity={opacity} strokeDasharray={dashArray} dot={false} legendType="none" />
-                                                                    <Scatter name={k} data={groups[k]} fill={scatterColor} fillOpacity={opacity} />
-                                                                </React.Fragment>
-                                                            );
-                                                        });
-                                                    })()}
-                                                </ComposedChart>
-                                            </ResponsiveContainer>
-                                    </div>
-                                </div>
-                        );
-                    })()}
+                <div className="flex flex-col gap-6 w-full">
+                    <InferenceSchedulingChart data={additionalChartData} initialXAxis="tpot" />
+                    <InferenceSchedulingChart data={additionalChartData} initialXAxis="ttft" initialLogScale={true} />
                 </div>
                 
                 {/* Summary Metrics Table */}
