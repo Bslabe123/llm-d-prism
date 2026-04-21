@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, Zap, BarChart2, ArrowRight, Server, Cpu, CheckCircle, Shield, TrendingUp, HelpCircle, FileCode } from 'lucide-react';
+import { Activity, Zap, BarChart2, ArrowRight, Server, Cpu, CheckCircle, Shield, TrendingUp, HelpCircle, FileCode, Link } from 'lucide-react';
 
 const PrismHome = ({ onNavigate }) => {
     return (
@@ -205,7 +205,9 @@ const PrismHome = ({ onNavigate }) => {
                     </div>
                 </section>
                 
-                {/* Section: Utility Suite */}
+
+
+{/* Section: Utility Suite */}
                 <section className="mb-20 w-full max-w-4xl">
                     <h2 className="text-2xl font-bold mb-2 text-center text-slate-100">
                           Utility Suite
@@ -279,92 +281,177 @@ const PrismHome = ({ onNavigate }) => {
                 </section>
                 
 
-                {/* Section: Who is it for? (Aligned with SKILL.md) */}
-                <section className="mb-20 w-full max-w-4xl">
-                     <h2 className="text-2xl font-bold mb-2 text-center text-slate-100">
-                          Who is it for?
-                     </h2>
-                     <p className="text-sm text-slate-500 text-center mb-8">Discover how different roles find value in Prism's performance tracking.</p>
-                     <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                         <div className="bg-slate-900 shadow-xl border border-slate-800 rounded-xl p-8 hover:shadow-2xl transition-all cursor-default h-full flex flex-col">
-                             <div className="flex items-center mb-4">
-                                 <TrendingUp className="h-6 w-6 text-blue-500 mr-2" />
-                                 <h3 className="text-xl font-semibold text-slate-100">Feature developers</h3>
-                             </div>
-                              <p className="text-sm text-slate-400 mb-6 flex-1">
-                                 Ensure new features hit price/performance goals and are easily reproducible.
-                              </p>
-                              <ul className="text-sm space-y-3 text-slate-300">
-                                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> Isolate component and system benchmarks</li>
-                                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> Evaluate performance with established baselines</li>
-                                 <li className="flex items-start"><CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> Format results for easy publication & reproduction</li>
-                              </ul>
-                         </div>
-                         <div className="bg-slate-900 shadow-xl border border-slate-800 rounded-xl p-8 hover:shadow-2xl transition-all cursor-default h-full flex flex-col">
-                             <div className="flex items-center mb-4">
-                                 <Server className="h-6 w-6 text-blue-500 mr-2" />
-                                 <h3 className="text-xl font-semibold text-slate-100">Stack operators</h3>
-                             </div>
-                             <p className="text-sm text-slate-400 mb-6 flex-1">
-                                 Configure production stacks with stable optimizations and monitor for regressions.
-                             </p>
-                             <ul className="text-sm space-y-3 text-slate-300">
-                                <li className="flex items-start"><CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> Compare price vs. performance</li>
-                                <li className="flex items-start"><CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> Select optimal configurations</li>
-                                <li className="flex items-start"><CheckCircle className="h-4 w-4 text-blue-500 mr-2 mt-0.5 flex-shrink-0" /> Reproduce benchmarks</li>
-                             </ul>
-                         </div>
-                     </div>
-                </section>
+
 
                 {/* Section: How it works */}
-                <section className="mb-20 w-full max-w-4xl">
-                     <h2 className="text-2xl font-bold mb-2 text-center text-slate-100">
-                          How it works
+                <section className="mb-20 w-full max-w-6xl mx-auto pl-20">
+                     <h2 className="text-3xl font-bold mb-2 text-center text-slate-100">
+                          How it works: The Full Benchmark Lifecycle
                      </h2>
-                     <p className="text-sm text-slate-500 text-center mb-12">Understanding the dynamic scanning and normalization lifecycle.</p>
-                     <div className="space-y-12 relative before:absolute before:left-6 before:top-2 before:bottom-2 before:w-0.5 before:bg-gradient-to-b before:from-cyan-500 before:to-cyan-500/20">
-                         {/* Step 1 */}
-                         <div className="relative pl-16 flex flex-col justify-center min-h-[5rem] group/step">
-                              <div className="absolute left-6 -translate-x-1/2 flex items-center justify-center z-10 w-12 h-12 bg-slate-950 border-2 border-cyan-500/30 rounded-full shadow-sm group-hover/step:border-cyan-500/50 group-hover/step:shadow-md transition-all">
-                                  <Server className="h-5 w-5 text-cyan-400 group-hover/step:text-cyan-300 transition-colors" />
-                              </div>
-                              <div className="p-5 rounded-xl bg-gradient-to-r from-cyan-500/10 to-transparent flex-1 flex flex-col justify-center border-l-2 border-cyan-500/40 group-hover/step:border-cyan-500/60 transition-all">
-                                  <h4 className="text-lg font-bold mb-1 text-cyan-400 transition-colors">1. GCS bucket scanning</h4>
-                                  <p className="text-sm text-slate-400">
-                                      Prism monitors benchmarks dynamically. Standardized reports are tracked automatically sans manual imports.
-                                  </p>
-                              </div>
+                     <p className="text-sm text-slate-400 text-center mb-12 max-w-2xl mx-auto">
+                         Designed for human insight and agent automation. Standardizing the end-to-end lifecycle from routing optimization to high-fidelity reproduction.
+                     </p>
+                     
+                     <div className="flex flex-row gap-4 justify-between items-center relative mb-6">
+                         
+                         {/* Ambient glowing background in center */}
+                         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-48 h-48 bg-blue-600/10 rounded-full blur-3xl pointer-events-none" />
+
+                         {/* Left Column: Roles & Actions */}
+                         <div className="w-1/3 space-y-3 flex flex-col items-center md:items-end">
+                             <div className="w-full max-w-[320px] text-center text-xs font-extrabold text-cyan-400/90 uppercase tracking-widest mb-2">User & Agent Roles</div>
+                             
+                             {/* Feature Developer */}
+                             <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-xl p-3 w-full max-w-[320px] hover:border-cyan-500/30 transition-all group">
+                                 <div className="mb-2">
+                                     <h4 className="text-sm font-bold text-white">Feature Developer</h4>
+                                 </div>
+                                 <div className="space-y-1 text-sm text-slate-400">
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-cyan-400">•</span>
+                                         <span>Isolate component and system benchmarks.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-cyan-400">•</span>
+                                         <span>Evaluate performance with established baselines.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-cyan-400">•</span>
+                                         <span>Format results for publication and reproduction.</span>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             {/* Benchmark Developer */}
+                             <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-xl p-3 w-full max-w-[320px] hover:border-cyan-500/30 transition-all group">
+                                 <div className="mb-2">
+                                     <h4 className="text-sm font-bold text-white">Benchmark Developer</h4>
+                                 </div>
+                                 <div className="space-y-1 text-sm text-slate-400">
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-cyan-400">•</span>
+                                         <span>Publish reproducible workloads to the open catalog.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-cyan-400">•</span>
+                                         <span>Configure cloud infrastructure for distributed testing.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-cyan-400">•</span>
+                                         <span>Validate benchmark results for accuracy and correctness.</span>
+                                     </div>
+                                 </div>
+                             </div>
+
                          </div>
 
-                         {/* Step 2 */}
-                         <div className="relative pl-16 flex flex-col justify-center min-h-[5rem] group/step">
-                              <div className="absolute left-6 -translate-x-1/2 flex items-center justify-center z-10 w-12 h-12 bg-slate-950 border-2 border-cyan-500/30 rounded-full shadow-sm group-hover/step:border-cyan-500/50 group-hover/step:shadow-md transition-all">
-                                  <BarChart2 className="h-5 w-5 text-cyan-400 group-hover/step:text-cyan-300 transition-colors" />
-                              </div>
-                              <div className="p-5 rounded-xl bg-gradient-to-r from-cyan-500/10 to-transparent flex-1 flex flex-col justify-center border-l-2 border-cyan-500/40 group-hover/step:border-cyan-500/60 transition-all">
-                                  <h4 className="text-lg font-bold mb-1 text-cyan-400 transition-colors">2. Normalization & comparison</h4>
-                                  <p className="text-sm text-slate-400">
-                                      Metric definitions are aligned. Hardware types are unified. Compare vs historical baselines.
-                                  </p>
-                              </div>
+                         {/* Center Column: Core Pipeline */}
+                         <div className="w-1/3 relative border-2 border-dashed border-slate-700 rounded-2xl p-4 bg-slate-900/50 backdrop-blur-xl flex flex-col items-center space-y-2 hover:border-blue-500/30 transition-all">
+                             
+                             {/* Prism */}
+                             <div className="bg-gradient-to-r from-purple-500/10 to-purple-600/10 border border-purple-500/30 rounded-xl p-2 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-purple-500/50 transition-all">
+                                 <h4 className="text-sm font-bold text-purple-400 mb-0.5">Prism</h4>
+                                 <p className="text-sm text-slate-400">Visualize and compare metrics across benchmarks.</p>
+                             </div>
+
+                             {/* Llm-d Results Store */}
+                             <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-3 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-blue-500/50 transition-all">
+                                 <h4 className="text-sm font-bold text-blue-400 mb-0.5">llm-d Results Store</h4>
+                                 <p className="text-sm text-slate-400">Scalable OSS store for unified schema results.</p>
+                             </div>
+
+                             {/* Standard Benchmark Format / Report */}
+                             <a 
+                                 href="https://github.com/llm-d/llm-d-benchmark/blob/main/benchmark_report"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl p-2 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-cyan-500/50 transition-all cursor-pointer"
+                             >
+                                 <h4 className="text-sm font-bold text-cyan-400 mb-0.5 flex items-center justify-center gap-1">
+                                     Standard Benchmark Report
+                                     <Link className="h-3 w-3 text-cyan-400 group-hover:scale-110 transition-transform" />
+                                 </h4>
+                                 <p className="text-sm text-slate-400">Unified JSON schema guarantees data interoperability.</p>
+                             </a>
+
+                             {/* Test Harness */}
+                             <a 
+                                 href="https://github.com/kubernetes-sigs/inference-perf/"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl p-2 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-cyan-500/50 transition-all cursor-pointer"
+                             >
+                                 <h4 className="text-sm font-bold text-cyan-400 mb-0.5 flex items-center justify-center gap-1">
+                                     Test Harness
+                                     <Link className="h-3 w-3 text-cyan-400 group-hover:scale-110 transition-transform" />
+                                 </h4>
+                                 <p className="text-sm text-slate-400">Stress distributed systems with agentic workloads.</p>
+                             </a>
+
+                             {/* Real World Workload Catalog */}
+                             <a 
+                                 href="https://github.com/kubernetes-sigs/inference-perf/tree/main/workload-catalog"
+                                 target="_blank"
+                                 rel="noopener noreferrer"
+                                 className="bg-gradient-to-r from-cyan-500/10 to-blue-500/10 border border-cyan-500/30 rounded-xl p-2 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-cyan-500/50 transition-all cursor-pointer"
+                             >
+                                 <h4 className="text-sm font-bold text-cyan-400 mb-0.5 flex items-center justify-center gap-1">
+                                     Real World Workload Catalog
+                                     <Link className="h-3 w-3 text-cyan-400 group-hover:scale-110 transition-transform" />
+                                 </h4>
+                                 <p className="text-sm text-slate-400">Access standardized workloads for evaluation.</p>
+                             </a>
+
                          </div>
 
-                         {/* Step 3 */}
-                         <div className="relative pl-16 flex flex-col justify-center min-h-[5rem] group/step">
-                              <div className="absolute left-6 -translate-x-1/2 flex items-center justify-center z-10 w-12 h-12 bg-slate-950 border-2 border-cyan-500/30 rounded-full shadow-sm group-hover/step:border-cyan-500/50 group-hover/step:shadow-md transition-all">
-                                  <CheckCircle className="h-5 w-5 text-cyan-400 group-hover/step:text-cyan-300 transition-colors" />
-                              </div>
-                              <div className="p-5 rounded-xl bg-gradient-to-r from-cyan-500/10 to-transparent flex-1 flex flex-col justify-center border-l-2 border-cyan-500/40 group-hover/step:border-cyan-500/60 transition-all">
-                                  <h4 className="text-lg font-bold mb-1 text-cyan-400 transition-colors">3. Reproduce & upgrade</h4>
-                                  <p className="text-sm text-slate-400">
-                                      Select standard benchmarks comparing challenger vs. baseline. One-click export Helm upgrade definitions.
-                                  </p>
-                              </div>
+                         {/* Right Column: Roles & Actions */}
+                         <div className="w-1/3 space-y-3 flex flex-col items-center lg:items-start">
+                             <div className="w-full max-w-[320px] text-center text-xs font-extrabold text-purple-400/90 uppercase tracking-widest mb-2">User & Agent Roles</div>
+                             
+                             {/* Solutions Architect */}
+                             <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-xl p-3 w-full max-w-[320px] hover:border-purple-500/30 transition-all group">
+                                 <div className="mb-2">
+                                     <h4 className="text-sm font-bold text-white">Solutions Architect</h4>
+                                 </div>
+                                 <div className="space-y-1 text-sm text-slate-400">
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-purple-400">•</span>
+                                         <span>Analyze features for optimal architectural fit.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-purple-400">•</span>
+                                         <span>Architect full stack distributed inference solutions.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-purple-400">•</span>
+                                         <span>Fork and run new custom benchmarks dynamically.</span>
+                                     </div>
+                                 </div>
+                             </div>
+
+                             {/* Stack Operator */}
+                             <div className="bg-slate-900/80 backdrop-blur-xl border border-slate-800 rounded-xl p-3 w-full max-w-[320px] hover:border-purple-500/30 transition-all group">
+                                 <div className="mb-2">
+                                     <h4 className="text-sm font-bold text-white">Stack Operator</h4>
+                                 </div>
+                                 <div className="space-y-1 text-sm text-slate-400">
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-purple-400">•</span>
+                                         <span>Compare price vs performance of serving stacks.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-purple-400">•</span>
+                                         <span>Select optimal configurations for production use.</span>
+                                     </div>
+                                     <div className="flex items-start gap-1">
+                                         <span className="text-purple-400">•</span>
+                                         <span>Reproduce benchmarks to validate performance gain.</span>
+                                     </div>
+                                 </div>
+                             </div>
+
                          </div>
                      </div>
-
-
                 </section>
 
                 {/* Secondary Actions / Footer */}
