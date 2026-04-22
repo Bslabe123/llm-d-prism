@@ -1777,7 +1777,7 @@ const Dashboard = ({ onNavigateBack }) => {
                     </button>
                     
                     <button
-                        onClick={() => setShowDataPanel(true)}
+                        onClick={() => setShowDataPanel(!showDataPanel)}
                         className={`px-4 py-2 text-sm font-medium rounded-md border transition-colors flex items-center ${showDataPanel ? 'bg-blue-500/20 text-blue-400 border-blue-500/30' : 'text-slate-300 bg-slate-800 hover:bg-slate-700 border-slate-700'}`}
                     >
                         <Database className="w-4 h-4 mr-2" /> Connections
@@ -1921,6 +1921,12 @@ const Dashboard = ({ onNavigateBack }) => {
 
 
                 {/* Data Connections Panel Overlay */}
+                {showDataPanel && (
+                    <div 
+                        className="fixed inset-0 bg-black/50 z-[55] backdrop-blur-sm transition-opacity"
+                        onClick={() => setShowDataPanel(false)}
+                    />
+                )}
                 <DataConnectionsPanel
                     {...dashboardData} // Spread all data/handlers from useDashboardData
                     addToast={addToast}
