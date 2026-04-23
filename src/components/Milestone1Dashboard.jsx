@@ -484,33 +484,68 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
             const qps = rp.qps;
             const ttft99Result = interpolate(qps, baselinePoints, 'baseline_ttft_p99');
             const itl99Result = interpolate(qps, baselinePoints, 'baseline_itl_p99');
+            const ntpot99Result = interpolate(qps, baselinePoints, 'baseline_ntpot_p99');
+            const tpot99Result = interpolate(qps, baselinePoints, 'baseline_tpot_p99');
+            
             const ttft90Result = interpolate(qps, baselinePoints, 'baseline_ttft_p90');
             const itl90Result = interpolate(qps, baselinePoints, 'baseline_itl_p90');
+            const ntpot90Result = interpolate(qps, baselinePoints, 'baseline_ntpot_p90');
+            const tpot90Result = interpolate(qps, baselinePoints, 'baseline_tpot_p90');
+            
             const ttft50Result = interpolate(qps, baselinePoints, 'baseline_ttft_p50');
             const itl50Result = interpolate(qps, baselinePoints, 'baseline_itl_p50');
+            const ntpot50Result = interpolate(qps, baselinePoints, 'baseline_ntpot_p50');
+            const tpot50Result = interpolate(qps, baselinePoints, 'baseline_tpot_p50');
+            
             const outputRateResult = interpolate(qps, baselinePoints, 'baseline_output_token_rate');
             
             return {
                 qps: Math.round(qps * 10) / 10,
+                
                 router_ttft_p99: rp.router_ttft_p99,
                 router_itl_p99: rp.router_itl_p99,
+                router_ntpot_p99: rp.router_ntpot_p99,
+                router_tpot_p99: rp.router_tpot_p99,
+                
                 router_ttft_p90: rp.router_ttft_p90,
                 router_itl_p90: rp.router_itl_p90,
+                router_ntpot_p90: rp.router_ntpot_p90,
+                router_tpot_p90: rp.router_tpot_p90,
+                
                 router_ttft_p50: rp.router_ttft_p50,
                 router_itl_p50: rp.router_itl_p50,
+                router_ntpot_p50: rp.router_ntpot_p50,
+                router_tpot_p50: rp.router_tpot_p50,
+                
                 router_output_token_rate: rp.router_output_token_rate,
+                
                 baseline_ttft_p99: ttft99Result.value,
                 baseline_ttft_p99_interpolated: ttft99Result.interpolated,
                 baseline_itl_p99: itl99Result.value,
                 baseline_itl_p99_interpolated: itl99Result.interpolated,
+                baseline_ntpot_p99: ntpot99Result.value,
+                baseline_ntpot_p99_interpolated: ntpot99Result.interpolated,
+                baseline_tpot_p99: tpot99Result.value,
+                baseline_tpot_p99_interpolated: tpot99Result.interpolated,
+                
                 baseline_ttft_p90: ttft90Result.value,
                 baseline_ttft_p90_interpolated: ttft90Result.interpolated,
                 baseline_itl_p90: itl90Result.value,
                 baseline_itl_p90_interpolated: itl90Result.interpolated,
+                baseline_ntpot_p90: ntpot90Result.value,
+                baseline_ntpot_p90_interpolated: ntpot90Result.interpolated,
+                baseline_tpot_p90: tpot90Result.value,
+                baseline_tpot_p90_interpolated: tpot90Result.interpolated,
+                
                 baseline_ttft_p50: ttft50Result.value,
                 baseline_ttft_p50_interpolated: ttft50Result.interpolated,
                 baseline_itl_p50: itl50Result.value,
                 baseline_itl_p50_interpolated: itl50Result.interpolated,
+                baseline_ntpot_p50: ntpot50Result.value,
+                baseline_ntpot_p50_interpolated: ntpot50Result.interpolated,
+                baseline_tpot_p50: tpot50Result.value,
+                baseline_tpot_p50_interpolated: tpot50Result.interpolated,
+                
                 baseline_output_token_rate: outputRateResult.value
             };
         }).sort((a, b) => a.qps - b.qps);
@@ -977,6 +1012,18 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                                 >
                                     ITL
                                 </button>
+                                <button 
+                                    onClick={() => setTableMetricMode('ntpot')} 
+                                    className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${tableMetricMode === 'ntpot' ? 'bg-cyan-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+                                >
+                                    NTPOT
+                                </button>
+                                <button 
+                                    onClick={() => setTableMetricMode('tpot')} 
+                                    className={`px-3 py-1.5 text-xs font-bold rounded-md transition-all ${tableMetricMode === 'tpot' ? 'bg-cyan-500 text-slate-950 shadow-md' : 'text-slate-400 hover:text-white'}`}
+                                >
+                                    TPOT
+                                </button>
                             </div>
                             <div className="flex gap-2 bg-slate-950 border border-slate-800 p-1 rounded-lg">
                                 <button 
@@ -1031,13 +1078,20 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                             <tbody>
                                 {(() => {
                                     const enhancedData = tableData.map(row => {
-                                        const base = tableMetricMode === 'ttft' 
-                                            ? (selectedPercentile === 'P50' ? row.baseline_ttft_p50 : selectedPercentile === 'P90' ? row.baseline_ttft_p90 : row.baseline_ttft_p99)
-                                            : (selectedPercentile === 'P50' ? row.baseline_itl_p50 : selectedPercentile === 'P90' ? row.baseline_itl_p90 : row.baseline_itl_p99);
-                                        
-                                        const opt = tableMetricMode === 'ttft' 
-                                            ? (selectedPercentile === 'P50' ? row.router_ttft_p50 : selectedPercentile === 'P90' ? row.router_ttft_p90 : row.router_ttft_p99)
-                                            : (selectedPercentile === 'P50' ? row.router_itl_p50 : selectedPercentile === 'P90' ? row.router_itl_p90 : row.router_itl_p99);
+                                        let base, opt;
+                                        if (tableMetricMode === 'ttft') {
+                                            base = selectedPercentile === 'P50' ? row.baseline_ttft_p50 : selectedPercentile === 'P90' ? row.baseline_ttft_p90 : row.baseline_ttft_p99;
+                                            opt = selectedPercentile === 'P50' ? row.router_ttft_p50 : selectedPercentile === 'P90' ? row.router_ttft_p90 : row.router_ttft_p99;
+                                        } else if (tableMetricMode === 'itl') {
+                                            base = selectedPercentile === 'P50' ? row.baseline_itl_p50 : selectedPercentile === 'P90' ? row.baseline_itl_p90 : row.baseline_itl_p99;
+                                            opt = selectedPercentile === 'P50' ? row.router_itl_p50 : selectedPercentile === 'P90' ? row.router_itl_p90 : row.router_itl_p99;
+                                        } else if (tableMetricMode === 'ntpot') {
+                                            base = selectedPercentile === 'P50' ? row.baseline_ntpot_p50 : selectedPercentile === 'P90' ? row.baseline_ntpot_p90 : row.baseline_ntpot_p99;
+                                            opt = selectedPercentile === 'P50' ? row.router_ntpot_p50 : selectedPercentile === 'P90' ? row.router_ntpot_p90 : row.router_ntpot_p99;
+                                        } else if (tableMetricMode === 'tpot') {
+                                            base = selectedPercentile === 'P50' ? row.baseline_tpot_p50 : selectedPercentile === 'P90' ? row.baseline_tpot_p90 : row.baseline_tpot_p99;
+                                            opt = selectedPercentile === 'P50' ? row.router_tpot_p50 : selectedPercentile === 'P90' ? row.router_tpot_p90 : row.router_tpot_p99;
+                                        }
                                         
                                         const gain = base && opt ? ((base - opt) / base) * 100 : 0;
 
