@@ -1157,7 +1157,7 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
                                 <p className="text-xs text-slate-400">
                                     For deep architectural specifications, view the full instructions directly on our repository:
                                 </p>
-                                <a href="https://github.com/llm-d/llm-d/blob/main/guides/inference-scheduling/README.md#benchmarking" target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center text-xs font-bold text-cyan-400 hover:underline">
+                                <a href="https://github.com/llm-d/llm-d/tree/main/guides/optimized-baseline" target="_blank" rel="noreferrer" className="mt-2 inline-flex items-center text-xs font-bold text-cyan-400 hover:underline">
                                     View complete guide <ExternalLink className="w-3.5 h-3.5 ml-1" />
                                 </a>
                             </div>
