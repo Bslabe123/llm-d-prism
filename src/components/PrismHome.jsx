@@ -216,7 +216,7 @@ const PrismHome = ({ onNavigate }) => {
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
                         {/* Card 1: Benchmark Browser */}
                         <div 
-                            onClick={() => onNavigate('advanced')}
+                            onClick={() => onNavigate('benchmark-browser')}
                             className="bg-slate-900 shadow-xl border border-slate-800 rounded-xl p-4 hover:shadow-2xl hover:-translate-y-1 transition-all cursor-pointer flex flex-col justify-between h-full group"
                         >
                             <div>
