@@ -1,0 +1,4394 @@
+[
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-low-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.05 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3885,
+              "p50": 0.37,
+              "p99": 0.814
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.746,
+              "p50": 5.746,
+              "p99": 10.4908
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-low-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.05 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4988,
+              "p50": 0.475,
+              "p99": 1.045
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.235,
+              "p50": 6.235,
+              "p99": 11.413
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-low-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.05 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1884.16
+            },
+            "input_token_rate": {
+              "mean": 8007.68
+            },
+            "request_rate": {
+              "mean": 7.36
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.798,
+              "p50": 0.76,
+              "p99": 2.432
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.904,
+              "p50": 6.904,
+              "p99": 13.4912
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-low-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.05 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1945.6
+            },
+            "input_token_rate": {
+              "mean": 8268.8
+            },
+            "request_rate": {
+              "mean": 7.6
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.7786,
+              "p50": 1.6939,
+              "p99": 5.4205
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 8.0939,
+              "p50": 8.0939,
+              "p99": 16.9405
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-medium-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.4 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3885,
+              "p50": 0.37,
+              "p99": 0.814
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.746,
+              "p50": 5.746,
+              "p99": 10.4908
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-medium-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.4 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4988,
+              "p50": 0.475,
+              "p99": 1.045
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.235,
+              "p50": 6.235,
+              "p99": 11.413
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-medium-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.4 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1884.16
+            },
+            "input_token_rate": {
+              "mean": 8007.68
+            },
+            "request_rate": {
+              "mean": 7.36
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.798,
+              "p50": 0.76,
+              "p99": 2.432
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.904,
+              "p50": 6.904,
+              "p99": 13.4912
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-medium-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.4 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1945.6
+            },
+            "input_token_rate": {
+              "mean": 8268.8
+            },
+            "request_rate": {
+              "mean": 7.6
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.7786,
+              "p50": 1.6939,
+              "p99": 5.4205
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 8.0939,
+              "p50": 8.0939,
+              "p99": 16.9405
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-high-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.85 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3885,
+              "p50": 0.37,
+              "p99": 0.814
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.746,
+              "p50": 5.746,
+              "p99": 10.4908
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-high-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.85 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4988,
+              "p50": 0.475,
+              "p99": 1.045
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.235,
+              "p50": 6.235,
+              "p99": 11.413
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-high-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.85 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1884.16
+            },
+            "input_token_rate": {
+              "mean": 8007.68
+            },
+            "request_rate": {
+              "mean": 7.36
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.798,
+              "p50": 0.76,
+              "p99": 2.432
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.904,
+              "p50": 6.904,
+              "p99": 13.4912
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-baseline-high-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "baseline | reuse=0.85 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "baseline"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1945.6
+            },
+            "input_token_rate": {
+              "mean": 8268.8
+            },
+            "request_rate": {
+              "mean": 7.6
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.7786,
+              "p50": 1.6939,
+              "p99": 5.4205
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 8.0939,
+              "p50": 8.0939,
+              "p99": 16.9405
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0,
+            "p50": 0,
+            "p99": 0
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-low-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.05 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3827,
+              "p50": 0.3645,
+              "p99": 0.8018
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.7405,
+              "p50": 5.7405,
+              "p99": 10.4786
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.03,
+            "p50": 0.03,
+            "p99": 0.033
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-low-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.05 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4913,
+              "p50": 0.4679,
+              "p99": 1.0293
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.2279,
+              "p50": 6.2279,
+              "p99": 11.3973
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.03,
+            "p50": 0.03,
+            "p99": 0.033
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-low-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.05 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1887.6
+            },
+            "input_token_rate": {
+              "mean": 8022.3
+            },
+            "request_rate": {
+              "mean": 7.37
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.786,
+              "p50": 0.7486,
+              "p99": 1.6469
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.8926,
+              "p50": 6.8926,
+              "p99": 12.7061
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.03,
+            "p50": 0.03,
+            "p99": 0.033
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-low-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.05 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1958.5
+            },
+            "input_token_rate": {
+              "mean": 8323.64
+            },
+            "request_rate": {
+              "mean": 7.65
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.7519,
+              "p50": 1.6685,
+              "p99": 3.6707
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 8.0685,
+              "p50": 8.0685,
+              "p99": 15.1907
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.03,
+            "p50": 0.03,
+            "p99": 0.033
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-medium-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.4 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3419,
+              "p50": 0.3256,
+              "p99": 0.7163
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.7016,
+              "p50": 5.7016,
+              "p99": 10.3931
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.24,
+            "p50": 0.24,
+            "p99": 0.264
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-medium-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.4 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4389,
+              "p50": 0.418,
+              "p99": 0.9196
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.178,
+              "p50": 6.178,
+              "p99": 11.2876
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.24,
+            "p50": 0.24,
+            "p99": 0.264
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-medium-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.4 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1911.69
+            },
+            "input_token_rate": {
+              "mean": 8124.66
+            },
+            "request_rate": {
+              "mean": 7.47
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.7022,
+              "p50": 0.6688,
+              "p99": 1.4714
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.8128,
+              "p50": 6.8128,
+              "p99": 12.5306
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.24,
+            "p50": 0.24,
+            "p99": 0.264
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-medium-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.4 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 2048.82
+            },
+            "input_token_rate": {
+              "mean": 8707.48
+            },
+            "request_rate": {
+              "mean": 8
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.5652,
+              "p50": 1.4906,
+              "p99": 3.2794
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 7.8906,
+              "p50": 7.8906,
+              "p99": 14.7994
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.24,
+            "p50": 0.24,
+            "p99": 0.264
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-high-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.85 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.2894,
+              "p50": 0.2757,
+              "p99": 0.6064
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.6517,
+              "p50": 5.6517,
+              "p99": 10.2832
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.51,
+            "p50": 0.51,
+            "p99": 0.561
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-high-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.85 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3716,
+              "p50": 0.3539,
+              "p99": 0.7785
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.1139,
+              "p50": 6.1139,
+              "p99": 11.1465
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.51,
+            "p50": 0.51,
+            "p99": 0.561
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-high-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.85 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1942.65
+            },
+            "input_token_rate": {
+              "mean": 8256.27
+            },
+            "request_rate": {
+              "mean": 7.59
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.5945,
+              "p50": 0.5662,
+              "p99": 1.2456
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.7102,
+              "p50": 6.7102,
+              "p99": 12.3048
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.51,
+            "p50": 0.51,
+            "p99": 0.561
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-approximate-high-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "approximate | reuse=0.85 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "approximate"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 2164.94
+            },
+            "input_token_rate": {
+              "mean": 9201
+            },
+            "request_rate": {
+              "mean": 8.46
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.3251,
+              "p50": 1.262,
+              "p99": 2.7763
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 7.662,
+              "p50": 7.662,
+              "p99": 14.2963
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.51,
+            "p50": 0.51,
+            "p99": 0.561
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-low-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.05 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3793,
+              "p50": 0.3612,
+              "p99": 0.7947
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.7372,
+              "p50": 5.7372,
+              "p99": 10.4715
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.0475,
+            "p50": 0.0475,
+            "p99": 0.0523
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-low-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.05 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4869,
+              "p50": 0.4637,
+              "p99": 1.0202
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.2237,
+              "p50": 6.2237,
+              "p99": 11.3882
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.0475,
+            "p50": 0.0475,
+            "p99": 0.0523
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-low-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.05 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1889.61
+            },
+            "input_token_rate": {
+              "mean": 8030.83
+            },
+            "request_rate": {
+              "mean": 7.38
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.779,
+              "p50": 0.742,
+              "p99": 1.6323
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.886,
+              "p50": 6.886,
+              "p99": 12.6915
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.0475,
+            "p50": 0.0475,
+            "p99": 0.0523
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-low-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.05 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 1000,
+            "sampling": "uniform",
+            "zipf_s": 0,
+            "reuse_rate": 0.05,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1966.03
+            },
+            "input_token_rate": {
+              "mean": 8355.62
+            },
+            "request_rate": {
+              "mean": 7.68
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.7364,
+              "p50": 1.6537,
+              "p99": 3.6381
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 8.0537,
+              "p50": 8.0537,
+              "p99": 15.1581
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.0475,
+            "p50": 0.0475,
+            "p99": 0.0523
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-medium-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.4 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.3147,
+              "p50": 0.2997,
+              "p99": 0.6593
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.6757,
+              "p50": 5.6757,
+              "p99": 10.3361
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.38,
+            "p50": 0.38,
+            "p99": 0.418
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-medium-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.4 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.404,
+              "p50": 0.3848,
+              "p99": 0.8465
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.1448,
+              "p50": 6.1448,
+              "p99": 11.2145
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.38,
+            "p50": 0.38,
+            "p99": 0.418
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-medium-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.4 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1927.74
+            },
+            "input_token_rate": {
+              "mean": 8192.9
+            },
+            "request_rate": {
+              "mean": 7.53
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.6464,
+              "p50": 0.6156,
+              "p99": 1.3543
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.7596,
+              "p50": 6.7596,
+              "p99": 12.4135
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.38,
+            "p50": 0.38,
+            "p99": 0.418
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-medium-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.4 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 100,
+            "sampling": "zipf",
+            "zipf_s": 1,
+            "reuse_rate": 0.4,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 2109.03
+            },
+            "input_token_rate": {
+              "mean": 8963.38
+            },
+            "request_rate": {
+              "mean": 8.24
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.4407,
+              "p50": 1.3721,
+              "p99": 3.0186
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 7.7721,
+              "p50": 7.7721,
+              "p99": 14.5386
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.38,
+            "p50": 0.38,
+            "p99": 0.418
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-high-2qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.85 | 2 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 2,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 512
+            },
+            "input_token_rate": {
+              "mean": 2176
+            },
+            "request_rate": {
+              "mean": 2
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.2316,
+              "p50": 0.2206,
+              "p99": 0.4853
+            },
+            "time_per_output_token": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "inter_token_latency": {
+              "mean": 0.021,
+              "p50": 0.021,
+              "p99": 0.0378
+            },
+            "request_latency": {
+              "mean": 5.5966,
+              "p50": 5.5966,
+              "p99": 10.1621
+            }
+          },
+          "requests": {
+            "total": 240,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.8075,
+            "p50": 0.8075,
+            "p99": 0.8883
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-high-5qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.85 | 5 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 5,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1280
+            },
+            "input_token_rate": {
+              "mean": 5440
+            },
+            "request_rate": {
+              "mean": 5
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.2974,
+              "p50": 0.2832,
+              "p99": 0.6231
+            },
+            "time_per_output_token": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "inter_token_latency": {
+              "mean": 0.0225,
+              "p50": 0.0225,
+              "p99": 0.0405
+            },
+            "request_latency": {
+              "mean": 6.0432,
+              "p50": 6.0432,
+              "p99": 10.9911
+            }
+          },
+          "requests": {
+            "total": 600,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.8075,
+            "p50": 0.8075,
+            "p99": 0.8883
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.4
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-high-8qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.85 | 8 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 8,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 1976.77
+            },
+            "input_token_rate": {
+              "mean": 8401.27
+            },
+            "request_rate": {
+              "mean": 7.72
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 0.4758,
+              "p50": 0.4531,
+              "p99": 0.9969
+            },
+            "time_per_output_token": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "inter_token_latency": {
+              "mean": 0.024,
+              "p50": 0.024,
+              "p99": 0.0432
+            },
+            "request_latency": {
+              "mean": 6.5972,
+              "p50": 6.5972,
+              "p99": 12.0561
+            }
+          },
+          "requests": {
+            "total": 960,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.8075,
+            "p50": 0.8075,
+            "p99": 0.8883
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.48
+          }
+        }
+      }
+    }
+  },
+  {
+    "version": "0.2",
+    "run": {
+      "uid": "ecr-precise-high-10qps",
+      "eid": "encoder-cache-routing-poc",
+      "description": "precise | reuse=0.85 | 10 QPS",
+      "time": {
+        "start": "2026-06-02T00:00:00Z"
+      }
+    },
+    "scenario": {
+      "stack": [
+        {
+          "standardized": {
+            "role": "aggregate",
+            "kind": "inference_engine",
+            "model": {
+              "name": "Qwen/Qwen2.5-VL-32B-Instruct"
+            },
+            "accelerator": {
+              "model": "nvidia-h100-80gb",
+              "count": 8,
+              "parallelism": {
+                "tp": 8
+              }
+            }
+          }
+        }
+      ],
+      "load": {
+        "standardized": {
+          "tool": "inference-perf",
+          "rate_qps": 10,
+          "stage": 1,
+          "input_seq_len": {
+            "value": 1088
+          },
+          "output_seq_len": {
+            "value": 256
+          },
+          "concurrency": null,
+          "media": {
+            "modality": "image",
+            "pool_size": 10,
+            "sampling": "zipf",
+            "zipf_s": 1.2,
+            "reuse_rate": 0.85,
+            "image_tokens_per_request": 1024
+          }
+        }
+      },
+      "routing": {
+        "standardized": {
+          "mode": "precise"
+        }
+      }
+    },
+    "results": {
+      "request_performance": {
+        "aggregate": {
+          "throughput": {
+            "output_token_rate": {
+              "mean": 2292.89
+            },
+            "input_token_rate": {
+              "mean": 9744.78
+            },
+            "request_rate": {
+              "mean": 8.96
+            }
+          },
+          "latency": {
+            "time_to_first_token": {
+              "mean": 1.0605,
+              "p50": 1.01,
+              "p99": 2.222
+            },
+            "time_per_output_token": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "inter_token_latency": {
+              "mean": 0.025,
+              "p50": 0.025,
+              "p99": 0.045
+            },
+            "request_latency": {
+              "mean": 7.41,
+              "p50": 7.41,
+              "p99": 13.742
+            }
+          },
+          "requests": {
+            "total": 1200,
+            "failures": 0
+          }
+        }
+      },
+      "observability": {
+        "vllm_prefix_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.1,
+            "p50": 0.1,
+            "p99": 0.12
+          }
+        },
+        "encoder_cache_hit_rate": {
+          "aggregated": {
+            "mean": 0.8075,
+            "p50": 0.8075,
+            "p99": 0.8883
+          }
+        },
+        "epp_pool_avg_kv_cache_utilization": {
+          "aggregated": {
+            "mean": 0.64
+          }
+        }
+      }
+    }
+  }
+]

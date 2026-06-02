@@ -1,5 +1,5 @@
 import React from 'react';
-import { Activity, Zap, BarChart2, ArrowRight, Server, Cpu, CheckCircle, Shield, TrendingUp, HelpCircle, FileCode, Link } from 'lucide-react';
+import { Activity, Zap, BarChart2, ArrowRight, Server, Cpu, CheckCircle, Shield, TrendingUp, HelpCircle, FileCode, Link, Images } from 'lucide-react';
 
 const PrismHome = ({ onNavigate }) => {
     return (
@@ -71,6 +71,48 @@ const PrismHome = ({ onNavigate }) => {
                                     <div className="w-full bg-cyan-500 h-6 rounded-sm opacity-80"></div>
                                     <div className="w-full bg-cyan-500 h-5 rounded-sm opacity-60"></div>
                                     <div className="w-full bg-cyan-500 h-8 rounded-sm"></div>
+                                </div>
+                            </div>
+
+                            <button className="w-full py-2 bg-gradient-to-r from-cyan-500 to-blue-600 text-white rounded-lg font-medium text-xs flex items-center justify-center hover:from-cyan-400 hover:to-blue-500 shadow-[0_0_15px_rgba(34,211,238,0.3)] transform group-hover:scale-[1.02] transition-all">
+                                Launch Dashboard <ArrowRight className="ml-1.5 h-3 w-3" />
+                            </button>
+                        </div>
+
+                        {/* Path 1b: Encoder Cache Routing (Multimodal POC) */}
+                        <div
+                            onClick={() => onNavigate('encoder-cache-routing')}
+                            className="group relative bg-slate-900/80 backdrop-blur-xl shadow-2xl border-2 border-cyan-500/70 rounded-2xl p-5 hover:-translate-y-2 hover:shadow-[0_0_30px_rgba(34,211,238,0.3)] transition-all duration-500 cursor-pointer flex flex-col h-full overflow-hidden"
+                        >
+                            <div className="absolute top-0 right-0 text-xs px-2.5 py-1 bg-amber-500 text-white rounded-bl-lg font-mono font-bold tracking-wide shadow-lg">POC</div>
+                            <h3 className="text-lg font-bold mb-2 text-white group-hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                <Images className="h-5 w-5 text-cyan-400" /> Encoder Cache Routing
+                            </h3>
+                            <div className="flex flex-nowrap gap-1.5 mb-2">
+                                <span className="text-[10px] px-2 py-0.5 bg-cyan-500/10 text-cyan-400 rounded-full font-medium border border-cyan-500/20 whitespace-nowrap">Multimodal</span>
+                                <span className="text-[10px] px-2 py-0.5 bg-cyan-500/10 text-cyan-400 rounded-full font-medium border border-cyan-500/20 whitespace-nowrap">Shared images</span>
+                            </div>
+                            <p className="text-slate-400 text-xs mb-3 flex-1">
+                                Route requests that share an image to the replica with a warm encoder cache. Skip redundant vision-encodes and cut TTFT on shared-image traffic.
+                            </p>
+
+                            <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-3 mb-4 relative">
+                                <div className="space-y-1 mb-2">
+                                    <div className="flex justify-between text-xs">
+                                        <span className="text-slate-400">TTFT @ high reuse</span>
+                                        <span className="text-cyan-400 font-mono font-bold">-40%</span>
+                                    </div>
+                                    <div className="flex justify-between text-xs">
+                                        <span className="text-slate-400">Encoder cache hit</span>
+                                        <span className="text-cyan-400 font-mono font-bold">~80%</span>
+                                    </div>
+                                </div>
+                                <div className="h-8 flex items-end justify-between space-x-1">
+                                    <div className="w-full bg-cyan-500 h-8 rounded-sm"></div>
+                                    <div className="w-full bg-cyan-500 h-6 rounded-sm opacity-70"></div>
+                                    <div className="w-full bg-cyan-500 h-4 rounded-sm opacity-50"></div>
+                                    <div className="w-full bg-cyan-500 h-3 rounded-sm opacity-40"></div>
+                                    <div className="w-full bg-cyan-500 h-2 rounded-sm opacity-30"></div>
                                 </div>
                             </div>
 

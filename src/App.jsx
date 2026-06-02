@@ -17,6 +17,7 @@ import Dashboard from './components/Dashboard';
 import ErrorBoundary from './components/ErrorBoundary';
 import PrismHome from './components/PrismHome';
 import Milestone1Dashboard from './components/Milestone1Dashboard';
+import EncoderCacheRoutingDashboard from './components/EncoderCacheRoutingDashboard';
 import SchemaExplorer from './components/SchemaExplorer';
 import WorkloadCatalog from './components/WorkloadCatalog';
 
@@ -60,6 +61,7 @@ function App() {
         <main ref={mainRef} className="flex-1 overflow-y-auto flex flex-col relative w-full h-screen">
           {currentView === 'home' && <PrismHome onNavigate={handleNavigate} />}
           {currentView === 'intelligent-routing' && <Milestone1Dashboard onNavigateBack={() => handleNavigate('home')} onNavigate={handleNavigate} onToggleMobileNav={() => setIsMobileNavOpen(!isMobileNavOpen)} />}
+          {currentView === 'encoder-cache-routing' && <EncoderCacheRoutingDashboard onNavigateBack={() => handleNavigate('home')} />}
           {currentView === 'benchmark-browser' && <Dashboard onNavigateBack={() => handleNavigate('home')} />}
           {currentView === 'schema-explorer' && <SchemaExplorer onNavigateBack={() => handleNavigate('home')} />}
           {currentView === 'workload-catalog' && <WorkloadCatalog onNavigateBack={() => handleNavigate('home')} />}
