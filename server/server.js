@@ -335,6 +335,12 @@ const parseServerRegressionReport = (content, filePath, metadataContent, jsonCon
                             hardware = 'TPU v6e';
                         } else if (accel === 'tpu-v7' || accel.includes('v7') || accel.includes('tpu7')) {
                             hardware = 'TPU v7';
+                        } else if (accel.includes('h100')) {
+                            hardware = 'H100';
+                        } else if (accel.includes('a100')) {
+                            hardware = 'A100';
+                        } else if (accel.includes('l4')) {
+                            hardware = 'L4';
                         } else if (accel === 'gpu') {
                             hardware = 'GPU';
                         } else {
