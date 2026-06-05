@@ -374,10 +374,18 @@ const PrismHome = ({ onNavigate }) => {
                              </div>
 
                              {/* Llm-d Results Store */}
-                             <div className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-3 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-blue-500/50 transition-all">
-                                 <h4 className="text-sm font-bold text-blue-400 mb-0.5">llm-d Results Store</h4>
-                                 <p className="text-sm text-slate-400">Scalable OSS store for unified schema results.</p>
-                             </div>
+                              <a 
+                                  href="https://github.com/llm-d/llm-d-benchmark/tree/main/llmdbenchmark/result_store"
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="bg-gradient-to-r from-blue-500/10 to-purple-500/10 border border-blue-500/30 rounded-xl p-3 w-full max-w-[320px] h-[90px] flex flex-col items-center justify-center text-center group hover:border-blue-500/50 transition-all cursor-pointer"
+                              >
+                                  <h4 className="text-sm font-bold text-blue-400 mb-0.5 flex items-center justify-center gap-1">
+                                      llm-d Results Store
+                                      <Link className="h-3 w-3 text-blue-400 group-hover:scale-110 transition-transform" />
+                                  </h4>
+                                  <p className="text-sm text-slate-400">Scalable OSS store for unified schema results.</p>
+                              </a>
 
                              {/* Standard Benchmark Format / Report */}
                              <a 
