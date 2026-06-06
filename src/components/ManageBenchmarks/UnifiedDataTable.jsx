@@ -16,6 +16,11 @@ import React, { useState } from 'react';
 import { RotateCcw, ChevronDown, ChevronUp, Star, CheckSquare, Square, Check, Pencil, Trash2 } from 'lucide-react';
 import { getEffectiveTp, getBucket, getSourceTag, getSourceType, getSourceTypeStyle, formatOriginLabel } from '../../utils/dashboardHelpers';
 
+const getCleanModelName = (name) => {
+    if (!name) return '';
+    return name.replace(/\s*\[.*?\]/g, '').replace(/\s*\(.*?\)/g, '').trim();
+};
+
 export const UnifiedDataTable = (props) => {
     const [editingRunId, setEditingRunId] = useState(null);
     const [editingValue, setEditingValue] = useState('');
@@ -268,7 +273,9 @@ export const UnifiedDataTable = (props) => {
             
             let primaryResult = 0;
             if (typeof valA === 'string' && typeof valB === 'string') {
-                primaryResult = sortDirection === 'asc' ? valA.localeCompare(valB) : valB.localeCompare(valA);
+                primaryResult = sortDirection === 'asc' 
+                    ? valA.localeCompare(valB, undefined, { numeric: true, sensitivity: 'base' }) 
+                    : valB.localeCompare(valA, undefined, { numeric: true, sensitivity: 'base' });
             } else {
                 primaryResult = sortDirection === 'asc' ? valA - valB : valB - valA;
             }
@@ -284,7 +291,7 @@ export const UnifiedDataTable = (props) => {
             const originA = firstA?.source_info?.origin || firstA?.source || '';
             const originB = firstB?.source_info?.origin || firstB?.source || '';
             
-            const originCmp = originA.localeCompare(originB);
+            const originCmp = originA.localeCompare(originB, undefined, { numeric: true, sensitivity: 'base' });
             if (originCmp !== 0) {
                 return originCmp;
             }
@@ -292,12 +299,12 @@ export const UnifiedDataTable = (props) => {
             const fileA = firstA?.source_info?.file_identifier || firstA?.filename || '';
             const fileB = firstB?.source_info?.file_identifier || firstB?.filename || '';
             
-            const fileCmp = fileA.localeCompare(fileB);
+            const fileCmp = fileA.localeCompare(fileB, undefined, { numeric: true, sensitivity: 'base' });
             if (fileCmp !== 0) {
                 return fileCmp;
             }
 
-            return (a.benchmarkKey || '').localeCompare(b.benchmarkKey || '');
+            return (a.benchmarkKey || '').localeCompare(b.benchmarkKey || '', undefined, { numeric: true, sensitivity: 'base' });
         });
     }, [filteredStats, sortByField, sortDirection]);
 
@@ -306,9 +313,26 @@ export const UnifiedDataTable = (props) => {
     const groupedStats = React.useMemo(() => {
         const grouped = {};
         if (groupBy !== 'None') {
+            // Build a mapping of lowercase clean model names to their first seen nicely-cased clean name
+            const canonicalCasing = {};
+            sortedStats.forEach(stat => {
+                if (groupBy === 'Model') {
+                    const rawName = stat.model_name || stat.model || 'Unknown Model';
+                    const clean = getCleanModelName(rawName);
+                    const cleanLower = clean.toLowerCase();
+                    if (!canonicalCasing[cleanLower]) {
+                        canonicalCasing[cleanLower] = clean;
+                    }
+                }
+            });
+
             sortedStats.forEach(stat => {
                 let key = 'Other';
-                if (groupBy === 'Model') key = stat.model_name || stat.model || 'Unknown Model';
+                if (groupBy === 'Model') {
+                    const rawName = stat.model_name || stat.model || 'Unknown Model';
+                    const clean = getCleanModelName(rawName);
+                    key = canonicalCasing[clean.toLowerCase()] || clean;
+                }
                 if (groupBy === 'Hardware') key = stat.hardware || 'Unknown Hardware';
                 if (groupBy === 'Origin') {
                     const origin = stat.data?.[0]?.source_info?.origin || stat.data?.[0]?.source;
