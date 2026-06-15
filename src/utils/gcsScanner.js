@@ -459,3 +459,123 @@ export const parseRegressionReport = (content, filePath, metadataContent, jsonCo
         return null;
     }
 };
+
+const AGENTIC_BUCKET = 'llm-d-benchmarks';
+
+const AGENTIC_SCENARIO_MAP = {
+    'optimized-vllm': 0,
+    'llm-d-optimized-baseline': 1,
+    'llm-d-tiered-cache': 2,
+};
+
+export const parseAgenticWorkloadReport = (content, filePath) => {
+    try {
+        const doc = yaml.load(content);
+        if (!doc) return null;
+
+        const rp = doc.results?.request_performance || {};
+        const latency = rp.aggregate?.latency || rp.latency || {};
+        const throughput = rp.aggregate?.throughput || rp.throughput || {};
+        const requests = rp.aggregate?.requests || rp.requests || {};
+
+        const ttft = latency.time_to_first_token || {};
+        const tpot = latency.time_per_output_token || {};
+        const ntpot = latency.normalized_time_per_output_token || {};
+        const itl = latency.inter_token_latency || {};
+        const e2e = latency.request_latency || {};
+
+        const stack = doc.scenario?.stack?.[0]?.standardized || {};
+        const load = doc.scenario?.load?.native?.stages?.[0] || {};
+
+        const parts = filePath.split('/');
+        const scenario = parts[1] || 'unknown';
+        const scenarioId = AGENTIC_SCENARIO_MAP[scenario];
+        if (scenarioId === undefined) return null;
+
+        return {
+            id: generateUUID(),
+            filePath,
+            scenario,
+            scenarioId,
+            concurrency: load.concurrency_level || 0,
+            model: stack.model?.name || 'Unknown',
+            accelerator: stack.accelerator?.type || 'Unknown',
+            machineType: stack.machine_type || 'Unknown',
+            replicas: stack.replicas || 0,
+            inputLengthMean: requests.input_length?.mean || 0,
+            outputLengthMean: requests.output_length?.mean || 0,
+            ttft: {
+                p50: (ttft.p50 || 0) * 1000,
+                p90: (ttft.p90 || 0) * 1000,
+                p99: (ttft.p99 || 0) * 1000,
+            },
+            tpot: {
+                p50: (tpot.p50 || 0) * 1000,
+                p90: (tpot.p90 || 0) * 1000,
+                p99: (tpot.p99 || 0) * 1000,
+            },
+            ntpot: {
+                p50: (ntpot.p50 || 0) * 1000,
+                p90: (ntpot.p90 || 0) * 1000,
+                p99: (ntpot.p99 || 0) * 1000,
+            },
+            itl: {
+                p50: (itl.p50 || 0) * 1000,
+                p90: (itl.p90 || 0) * 1000,
+                p99: (itl.p99 || 0) * 1000,
+            },
+            e2e: {
+                p50: (e2e.p50 || 0) * 1000,
+                p90: (e2e.p90 || 0) * 1000,
+                p99: (e2e.p99 || 0) * 1000,
+            },
+            throughput: {
+                input: throughput.input_token_rate || 0,
+                output: throughput.output_token_rate || 0,
+                total: throughput.total_token_rate || 0,
+                qps: throughput.request_rate || 0,
+            },
+        };
+    } catch (e) {
+        console.warn(`Agentic YAML parsing failed for ${filePath}:`, e);
+        return null;
+    }
+};
+
+export const scanAgenticWorkloads = async () => {
+    try {
+        const listUrl = `/api/gcs/storage/v1/b/${AGENTIC_BUCKET}/o?prefix=agentic-workloads/`;
+        const response = await fetch(listUrl);
+        if (!response.ok) {
+            throw new Error(`Failed to list agentic workloads bucket: ${response.status}`);
+        }
+
+        const data = await response.json();
+        if (!data.items) return [];
+
+        const reports = [];
+
+        await Promise.all(data.items.map(async (item) => {
+            if (!item.name.endsWith('benchmark_report_v02.yaml')) return;
+
+            try {
+                const mediaUrl = `/api/gcs/storage/v1/b/${AGENTIC_BUCKET}/o/${encodeURIComponent(item.name)}?alt=media`;
+                const fileRes = await fetch(mediaUrl);
+                if (!fileRes.ok) return;
+
+                const content = await fileRes.text();
+                const parsed = parseAgenticWorkloadReport(content, item.name);
+                if (parsed) reports.push(parsed);
+            } catch (e) {
+                console.warn(`Failed to parse agentic file ${item.name}:`, e);
+            }
+        }));
+
+        reports.sort((a, b) => a.scenarioId - b.scenarioId || a.concurrency - b.concurrency);
+        return reports;
+
+    } catch (e) {
+        console.error('Agentic Workloads GCS Scan Error:', e);
+        return [];
+    }
+};
