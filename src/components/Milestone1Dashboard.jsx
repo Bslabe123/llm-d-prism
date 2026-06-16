@@ -694,7 +694,7 @@ const Milestone1Dashboard = ({ onNavigateBack, onNavigate, onToggleMobileNav }) 
 
                 <div className="flex items-center space-x-2 sm:space-x-4">
                     <a
-                        href="https://llm-d.ai/docs/community"
+                        href="https://llm-d.ai/community"
                         target="_blank"
                         rel="noreferrer"
                         className="px-3 py-1.5 sm:px-4 sm:py-2 text-sm font-medium rounded-md text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors flex items-center border border-slate-700"

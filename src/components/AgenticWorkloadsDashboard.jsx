@@ -531,7 +531,7 @@ export default function AgenticWorkloadsDashboard({ onNavigateBack, onNavigate, 
 
                 <div className="flex items-center space-x-3">
                     <a
-                        href="https://llm-d.ai/docs/community"
+                        href="https://llm-d.ai/community"
                         target="_blank"
                         rel="noreferrer"
                         className="px-3.5 py-1.5 text-xs font-medium rounded-lg text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors flex items-center border border-slate-700 cursor-pointer"

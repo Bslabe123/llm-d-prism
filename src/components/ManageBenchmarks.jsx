@@ -602,7 +602,7 @@ export default function ManageBenchmarks({ onNavigate, onNavigateBack, dashboard
                     </button>
 
                     <a 
-                        href="https://llm-d.ai/docs/community" 
+                        href="https://llm-d.ai/community" 
                         target="_blank" 
                         rel="noreferrer"
                         className="px-4 py-2 text-sm font-medium rounded-md text-slate-300 bg-slate-800 hover:bg-slate-700 transition-colors flex items-center border border-slate-700"
