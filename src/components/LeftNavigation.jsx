@@ -27,14 +27,9 @@ const MENU_GROUPS = [
         items: [
             { id: 'inference-scheduling', label: 'Intelligent routing', icon: Route, view: 'inference-scheduling' },
             { id: 'prefix-cache-offloading', label: 'Prefix cache offloading', icon: Database, view: 'prefix-cache-offloading', disabled: true },
-            { id: 'pd-disaggregation', label: 'Prefill / decode (P/D) disagg', icon: Split, view: 'pd-disaggregation', disabled: true },
-            { id: 'wide-ep', label: 'Wide expert parallelism', icon: Brain, view: 'wide-ep', disabled: true }
-        ]
-    },
-    {
-        title: "Workload hub",
-        items: [
-            { id: 'agentic-serving', label: 'Agentic serving', icon: Compass, view: 'agentic-serving' }
+            { id: 'pd-disaggregation', label: 'Prefill/decode disagg', icon: Split, view: 'pd-disaggregation', disabled: true },
+            { id: 'wide-ep', label: 'Wide expert parallelism', icon: Brain, view: 'wide-ep', disabled: true },
+            { id: 'agentic-serving', label: 'Agentic serving', icon: Compass, view: 'agentic-serving', separator: true }
         ]
     },
     {
@@ -87,50 +82,54 @@ export default function LeftNavigation({ currentView, onNavigate, isMobileOpen }
                             const isActive = currentView === item.view;
 
                             return (
-                                <button
-                                    key={item.id}
-                                    onClick={() => handleItemClick(item.view, item.disabled)}
-                                    aria-disabled={item.disabled}
-                                    title={!isExpanded ? item.label : undefined}
-                                    className={`group relative flex items-center gap-4 px-3 py-2.5 rounded-xl transition-all w-full text-left font-normal ${
-                                        isActive 
-                                            ? 'bg-cyan-600/15 text-cyan-300' 
-                                            : item.disabled 
-                                                ? 'text-slate-400 opacity-80 cursor-not-allowed' 
-                                                : 'text-slate-300 hover:bg-slate-800/50 hover:text-white cursor-pointer'
-                                    }`}
-                                >
-                                    {/* Active Side Indicator */}
-                                    {isActive && (
-                                        <div className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-cyan-500 shadow-md" />
+                                <React.Fragment key={item.id}>
+                                    {item.separator && (
+                                        <div className="my-2 border-t border-slate-800/60 mx-3" />
                                     )}
+                                    <button
+                                        onClick={() => handleItemClick(item.view, item.disabled)}
+                                        aria-disabled={item.disabled}
+                                        title={!isExpanded ? item.label : undefined}
+                                        className={`group relative flex items-center gap-4 px-3 py-2.5 rounded-xl transition-all w-full text-left font-normal ${
+                                            isActive 
+                                                ? 'bg-cyan-600/15 text-cyan-300' 
+                                                : item.disabled 
+                                                    ? 'text-slate-400 opacity-80 cursor-not-allowed' 
+                                                    : 'text-slate-300 hover:bg-slate-800/50 hover:text-white cursor-pointer'
+                                        }`}
+                                    >
+                                        {/* Active Side Indicator */}
+                                        {isActive && (
+                                            <div className="absolute left-0 top-2 bottom-2 w-1 rounded-r-full bg-cyan-500 shadow-md" />
+                                        )}
 
-                                    <div className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-cyan-600 text-white shadow' : 'bg-transparent text-slate-400 group-hover:text-slate-200'}`}>
-                                        <Icon className="w-5 h-5 shrink-0" />
-                                    </div>
+                                        <div className={`p-1.5 rounded-lg transition-colors ${isActive ? 'bg-cyan-600 text-white shadow' : 'bg-transparent text-slate-400 group-hover:text-slate-200'}`}>
+                                            <Icon className="w-5 h-5 shrink-0" />
+                                        </div>
 
-                                    {isExpanded && (
-                                        <div className="flex flex-1 items-center justify-between truncate">
-                                            <span className={`text-sm tracking-wide truncate ${isActive ? 'text-white font-medium' : 'font-normal'}`}>
-                                                {item.label}
-                                            </span>
-
-                                            {item.disabled && (
-                                                <span className="text-[9px] text-slate-400 font-mono px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700/60 shrink-0 tracking-wider">
-                                                    Coming soon
+                                        {isExpanded && (
+                                            <div className="flex flex-1 items-center justify-between truncate">
+                                                <span className={`text-sm tracking-wide truncate ${isActive ? 'text-white font-medium' : 'font-normal'}`}>
+                                                    {item.label}
                                                 </span>
-                                            )}
-                                        </div>
-                                    )}
 
-                                    {/* Tooltip when Collapsed */}
-                                    {!isExpanded && (
-                                        <div className="absolute left-16 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-800 border border-slate-700/80 text-white text-xs font-medium rounded-lg invisible group-hover:visible shadow-xl z-[99999] whitespace-nowrap flex items-center gap-2">
-                                            {item.label}
-                                            {item.disabled && <span className="text-[10px] text-slate-400 font-mono">(Coming soon)</span>}
-                                        </div>
-                                    )}
-                                </button>
+                                                {item.disabled && (
+                                                    <span className="text-[9px] text-slate-400 font-mono px-2 py-0.5 rounded bg-slate-800/80 border border-slate-700/60 shrink-0 tracking-wider">
+                                                        Coming soon
+                                                    </span>
+                                                )}
+                                            </div>
+                                        )}
+
+                                        {/* Tooltip when Collapsed */}
+                                        {!isExpanded && (
+                                            <div className="absolute left-16 top-1/2 -translate-y-1/2 px-3 py-1.5 bg-slate-800 border border-slate-700/80 text-white text-xs font-medium rounded-lg invisible group-hover:visible shadow-xl z-[99999] whitespace-nowrap flex items-center gap-2">
+                                                {item.label}
+                                                {item.disabled && <span className="text-[10px] text-slate-400 font-mono">(Coming soon)</span>}
+                                            </div>
+                                        )}
+                                    </button>
+                                </React.Fragment>
                             );
                         })}
                     </div>
