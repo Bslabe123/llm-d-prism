@@ -1557,6 +1557,47 @@ export const useDashboardData = (initialState, dashboardState) => {
     // Benchmark Report v0.2 handlers
     // -------------------------------------------------------------------------
 
+    useEffect(() => {
+        const initDemoMode = async () => {
+            try {
+                const response = await fetch('/api/demo/profiles');
+                if (!response.ok) return;
+                const data = await response.json();
+                
+                if (data.enabled && data.profiles && data.profiles.length > 0) {
+                    console.log(`[useDashboardData] Demo Mode: Processing ${data.profiles.length} profiles...`);
+                    setBrv02Loading(true);
+                    setBrv02Error(null);
+
+                    const trulyNewStages = [];
+                    for (const item of data.profiles) {
+                        const record = await parseReportV02(item.text, item.filename);
+                        if (record) {
+                            const isDupInBatch = trulyNewStages.some(s => s.filename === record.filename);
+                            if (!isDupInBatch) {
+                                trulyNewStages.push(record);
+                            }
+                        }
+                    }
+
+                    if (trulyNewStages.length > 0) {
+                        setBrv02Runs(prev => {
+                            const allStages = [...prev.flatMap(run => run.stages), ...trulyNewStages];
+                            return groupStagesIntoRuns(allStages);
+                        });
+                        console.log(`[useDashboardData] Demo Mode: Successfully loaded ${trulyNewStages.length} stages.`);
+                    }
+                }
+            } catch (e) {
+                console.error("[useDashboardData] Failed to auto-load demo profiles:", e);
+            } finally {
+                setBrv02Loading(false);
+            }
+        };
+
+        initDemoMode();
+    }, []);
+
     const handleBrv02Upload = async (eventOrFiles) => {
         let files;
         let isEvent = false;

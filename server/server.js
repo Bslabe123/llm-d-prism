@@ -637,6 +637,32 @@ app.use(express.static(path.join(__dirname, '../dist'), { index: false }));
 
 // SPA Fallback: Serve index.html for any unknown routes
 // SPA Fallback: Serve index.html with runtime env injection
+app.get('/api/demo/profiles', async (req, res) => {
+    const dir = process.env.BACKEND_PROFILES_DIR;
+    if (!dir || !fs.existsSync(dir)) {
+        return res.json({ enabled: false, profiles: [] });
+    }
+
+    try {
+        const files = fs.readdirSync(dir);
+        const yamlPattern = /^benchmark_report_v0\.2.*\.ya?ml$/i;
+        const matchingFiles = files.filter(f => yamlPattern.test(f));
+
+        const profiles = [];
+        for (const f of matchingFiles) {
+            const fullPath = path.join(dir, f);
+            const text = fs.readFileSync(fullPath, 'utf8');
+            profiles.push({ filename: f, text });
+        }
+
+        console.log(`[Server] Demo mode serving ${profiles.length} local profile(s) from ${dir}`);
+        res.json({ enabled: true, profiles });
+    } catch (e) {
+        console.error('[Server] Failed to read demo profiles directory:', e);
+        res.status(500).json({ enabled: false, error: e.message });
+    }
+});
+
 app.get('*', async (req, res) => {
     try {
         const fs = await import('fs/promises');

@@ -48,6 +48,17 @@ function App() {
   const hasFetchedConfig = useRef(false);
 
   useEffect(() => {
+    if (dashboardData.brv02Runs && dashboardData.brv02Runs.length > 0) {
+      const params = new URLSearchParams(window.location.search);
+      if (params.get('view') !== 'benchmark-browser') {
+        params.set('view', 'benchmark-browser');
+        window.history.pushState({}, '', `${window.location.pathname}?${params.toString()}`);
+        setCurrentView('benchmark-browser');
+      }
+    }
+  }, [dashboardData.brv02Runs]);
+
+  useEffect(() => {
     const initialize = async () => {
       if (!hasFetchedConfig.current) {
         hasFetchedConfig.current = true;
